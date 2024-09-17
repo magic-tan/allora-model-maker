@@ -76,7 +76,7 @@ def main():
     fetcher = DataFetcher()
 
     # Select data dynamically based on user input
-    data = select_data(fetcher, "4", "data/sets/eth.csv")
+    data = select_data(fetcher) # example testing defaults , "4", "data/sets/eth.csv"
 
     # Normalize and preprocess the data
     data = preprocess_data(data)
