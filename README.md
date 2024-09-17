@@ -2,7 +2,7 @@
 
 ## Overview
 
-Allora Model Maker is a comprehensive machine learning framework designed for time series forecasting, specifically optimized for stock and similar data. It supports multiple models, including traditional statistical models like ARIMA and machine learning models like LSTM, XGBoost, and more.
+Allora Model Maker is a comprehensive machine learning framework designed for time series forecasting, specifically optimized for financial market data like cryptocurrency prices, stock prices, and more. It supports multiple models, including traditional statistical models like ARIMA and machine learning models like LSTM, XGBoost, and more.
 
 ## Table of Contents
 - [Features](#features)
