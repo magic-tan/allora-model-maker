@@ -33,8 +33,8 @@ Allora Model Maker is a comprehensive machine learning framework designed for ti
 
 1. Clone the repository:
     ```bash
-   git clone https://github.com/yourusername/AlloraModelMaker.git
-   cd AlloraModelMaker
+   git clone https://github.com/allora-network/allora-model-maker.git
+   cd allora-model-maker
     ```
 
 2. Create a conda environment:
@@ -131,7 +131,7 @@ By default, the system uses daily (`D`) intervals for time series resampling. Yo
 ## Directory Structure
 
  ```
-AlloraModelMaker/
+allora-model-maker/
 │
 ├── models/                   # Directory containing different models
 │   ├── lstm/                  # LSTM model files
