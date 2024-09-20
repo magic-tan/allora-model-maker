@@ -2,7 +2,6 @@
 import pandas as pd
 import requests
 
-# pylint: disable=import-error
 from data.config import API_KEYS, BASE_URLS
 
 

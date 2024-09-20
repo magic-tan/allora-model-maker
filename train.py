@@ -1,6 +1,5 @@
 # conda create --name modelmaker python=3.9
 # conda activate modelmaker
-# pip install cython numpy==1.24.3
 # pip install -r requirements.txt
 
 # pylint: disable=no-name-in-module
@@ -9,6 +8,7 @@ from data.csv_loader import CSVLoader
 from data.data_fetcher import DataFetcher
 from data.utils.data_preprocessing import preprocess_data
 from models.model_factory import ModelFactory
+from utils.common import print_colored
 
 
 def select_data(fetcher, default_selection=None, file_path=None):
@@ -38,7 +38,7 @@ def select_data(fetcher, default_selection=None, file_path=None):
             file_path = input("Enter the CSV file path: ").strip()
         return CSVLoader.load_csv(file_path)
 
-    print("Invalid choice, defaulting to Bitcoin from API.")
+    print_colored("Invalid choice, defaulting to Bitcoin from API.", "error")
     return fetcher.fetch_bitcoin_data()
 
 
@@ -66,7 +66,7 @@ def model_selection_input():
             if num.strip() in available_models
         ]
     else:
-        print("Invalid choice, defaulting to all models.")
+        print_colored("Invalid choice, defaulting to all models.", "error")
         model_types = models
 
     return model_types
@@ -76,7 +76,7 @@ def main():
     fetcher = DataFetcher()
 
     # Select data dynamically based on user input
-    data = select_data(fetcher) # example testing defaults , "4", "data/sets/eth.csv"
+    data = select_data(fetcher)  # example testing defaults , "4", "data/sets/eth.csv"
 
     # Normalize and preprocess the data
     data = preprocess_data(data)
@@ -93,7 +93,7 @@ def main():
         model = factory.create_model(model_type)
         model.train(data)
 
-    print("Model training and saving complete!")
+    print_colored("Model training and saving complete!", "success")
 
 
 if __name__ == "__main__":

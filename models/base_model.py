@@ -5,6 +5,8 @@ import joblib
 import pandas as pd
 import torch
 
+from utils.common import print_colored
+
 
 class Model(ABC):
     """Base class for all financial models with integrated save/load functionality."""
@@ -21,7 +23,6 @@ class Model(ABC):
         self.model_name = model_name
         self.model_type = model_type  # Default to 'pkl' since most are not PyTorch
         self.save_dir = save_dir
-        os.makedirs(save_dir, exist_ok=True)
         self.scaler = None  # Placeholder for models that use a scaler
         self.model = None  # Initialize with None
 
@@ -45,6 +46,7 @@ class Model(ABC):
 
     def save(self):
         """Save the model and scaler (if applicable) to disk."""
+        os.makedirs(self.save_dir, exist_ok=True)
         model_dir = os.path.join(self.save_dir, self.model_name)
         os.makedirs(model_dir, exist_ok=True)
 
@@ -56,7 +58,7 @@ class Model(ABC):
                     os.path.join(model_dir, "model.pt"),
                 )
             if self.debug:
-                print(f"PyTorch model saved as {model_dir}/model.pt")
+                print_colored(f"PyTorch model saved as {model_dir}/model.pt", "success")
         elif self.model_type == "pkl":
             # Save the model (joblib or pickle) and scaler (if applicable)
             joblib.dump(self.model, os.path.join(model_dir, "model.pkl"))
@@ -66,8 +68,9 @@ class Model(ABC):
                     os.path.join(model_dir, "scaler.pkl"),
                 )
             if self.debug:
-                print(
-                    f"Model and scaler saved as {model_dir}/model.pkl and {model_dir}/scaler.pkl"
+                print_colored(
+                    f"Model and scaler saved as {model_dir}/model.pkl and {model_dir}/scaler.pkl",
+                    "success",
                 )
 
     def load(self):
@@ -82,7 +85,7 @@ class Model(ABC):
             else:
                 self.model.load_state_dict(torch.load(model_path, weights_only=True))
             if self.debug:
-                print(f"PyTorch model loaded from {model_path}")
+                print_colored(f"PyTorch model loaded from {model_path}", "success")
         elif self.model_type == "pkl":
             # Load the model (joblib or pickle) and scaler (if applicable)
             model_path = os.path.join(model_dir, "model.pkl")
@@ -93,6 +96,6 @@ class Model(ABC):
                 self.scaler = joblib.load(scaler_path)
 
             if self.debug:
-                print(f"Model loaded from {model_path}")
+                print_colored(f"Model loaded from {model_path}", "success")
                 if os.path.exists(scaler_path):
-                    print(f"Scaler loaded from {scaler_path}")
+                    print_colored(f"Scaler loaded from {scaler_path}", "success")

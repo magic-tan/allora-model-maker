@@ -1,7 +1,7 @@
-.PHONY: lint format test clean runtests runtrain
+.PHONY: lint format test clean train eval package package-all $(MODEL_DIRS)
 
 lint:
-	find . -name "*.py" | xargs pylint
+	find . -name "*.py" | xargs pylint --rcfile=.pylintrc
 
 format:
 	black .
@@ -11,10 +11,17 @@ test:
 
 clean:
 	rm -rf __pycache__ .pytest_cache .coverage \
-		trained_models/ logs/ test_results/
+		trained_models/ packaged_models/ logs/ test_results/
 
-runtrain:
+train:
 	python train.py
 
-runtests:
+eval:
 	python test.py
+
+
+MODEL_DIRS := $(shell find trained_models -type d -maxdepth 1 -mindepth 1 -exec basename {} \;)
+package-all: $(addprefix package-, $(MODEL_DIRS))
+
+package-%:
+	python package_model_worker.py $*

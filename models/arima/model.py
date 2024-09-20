@@ -91,7 +91,7 @@ class ArimaModel(Model):
         )
 
         return pd.DataFrame(
-            {"date": predictions.index, "predictions": predictions.values.ravel()}
+            {"date": predictions.index, "prediction": predictions.values.ravel()}
         )
 
     def forecast(self, steps: int) -> pd.DataFrame:

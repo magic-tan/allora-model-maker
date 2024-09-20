@@ -57,7 +57,7 @@ class ProphetModel(Model):
             print("Forecast Output:")
             print(forecast[["ds", "yhat"]])
 
-        return pd.DataFrame({"date": forecast["ds"], "predictions": forecast["yhat"]})
+        return pd.DataFrame({"date": forecast["ds"], "prediction": forecast["yhat"]})
 
     def forecast(self, steps: int) -> pd.DataFrame:
         future_dates = self.model.make_future_dataframe(periods=steps)

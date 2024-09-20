@@ -171,4 +171,3 @@ This model skeleton was inspired by the need for a standardized structure for mo
 - [Model Policy Gradient](https://en.wikipedia.org/wiki/Policy_gradient_methods)
 - [Model Actor-Critic](https://en.wikipedia.org/wiki/Actor-critic)
 - [Model Monte Carlo Tree Search](https://en.wikipedia.org/wiki/Monte_Carlo_tree_search)
-

@@ -5,8 +5,6 @@ from sklearn.preprocessing import MinMaxScaler
 
 from models.base_model import Model
 from models.xgboost_time_series.configs import XgboostTimeSeriesConfig
-
-# pylint: disable=import-error,no-name-in-module
 from utils.model_commons import create_lag_features, split_and_scale_data
 
 
@@ -75,6 +73,13 @@ class XgboostTimeSeriesModel(Model):
             ["open", "high", "low", "volume"]
             + [f"lag_{i}" for i in range(1, self.n_lags + 1)]
         ].values
+
+        # Check if there are enough samples for inference
+        if len(features) == 0:
+            raise ValueError(
+                f"Not enough data for the model. Expected at least {self.n_lags + 1} rows, but got {len(input_data)}."
+            )
+
         features_scaled = self.scaler.transform(features)
 
         # Convert to XGBoost DMatrix for prediction

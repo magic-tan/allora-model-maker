@@ -1,9 +1,6 @@
 import importlib
 
-# pylint: disable=import-error, no-name-in-module
-from utils.common import snake_to_camel
-
-# pylint: disable=import-error, no-name-in-module
+from utils.common import print_colored, snake_to_camel
 from utils.model_commons import set_seed
 
 
@@ -17,7 +14,7 @@ class ModelFactory:
 
     def create_model(self, model_name: str):
         """Dynamically import and create a model class based on the model_name."""
-        print(f"Initializing model: {model_name}")
+        print_colored(f"Initializing model: {model_name}", "gray")
         try:
             # Dynamically construct the module path based on model_name
             module_name = f"{self.models_dir}.{model_name}.model"
@@ -27,7 +24,7 @@ class ModelFactory:
 
             # Convert the model_name from snake_case to CamelCase
             model_class_name = snake_to_camel(model_name) + "Model"
-            print(f"Model class name: {model_class_name}")
+            print_colored(f"Model class name: {model_class_name}", "gray")
 
             # Get the model class from the imported module
             model_class = getattr(model_module, model_class_name)

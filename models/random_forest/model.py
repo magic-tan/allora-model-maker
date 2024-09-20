@@ -6,7 +6,6 @@ from sklearn.preprocessing import MinMaxScaler
 from models.base_model import Model
 from models.random_forest.configs import RandomForestConfig
 
-# pylint: disable=import-error,no-name-in-module
 from utils.model_commons import split_and_scale_data
 
 

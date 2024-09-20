@@ -4,8 +4,6 @@ from sklearn.preprocessing import MinMaxScaler
 
 from models.base_model import Model
 from models.regression_time_series.configs import RegressionTimeSeriesConfig
-
-# pylint: disable=import-error,no-name-in-module
 from utils.model_commons import create_lag_features
 
 
@@ -57,6 +55,12 @@ class RegressionTimeSeriesModel(Model):
             ["open", "high", "low", "volume"]
             + [f"lag_{i}" for i in range(1, self.n_lags + 1)]
         ]
+
+        # Check if there are enough samples for inference
+        if len(x_test) == 0:
+            raise ValueError(
+                f"Not enough data for the model. Expected at least {self.n_lags + 1} rows, but got {len(input_data)}."
+            )
 
         # Use the scaler to normalize the input data
         x_test_scaled = self.scaler.transform(x_test)

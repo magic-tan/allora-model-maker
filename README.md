@@ -19,6 +19,7 @@ Allora Model Maker is a comprehensive machine learning framework designed for ti
   - [Interval Configuration](#interval-configuration)
 - [Directory Structure](#directory-structure)
 - [Makefile](#makefile)
+- [Packaging Models for Allora Worker](#packaging-models-for-allora-worker)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -150,6 +151,7 @@ allora-model-maker/
 │
 ├── train.py                   # Script for training models
 ├── test.py                    # Script for testing models and metrics
+├── package_model_worker.py    # Script for packaging a model for allora worker
 ├── README.md                  # This file
 ├── requirements.txt           # Python dependencies
 ├── Makefile                   # Makefile for streamlined operations
@@ -195,21 +197,22 @@ This command removes common build artifacts and directories, such as Python cach
 	•	.pytest_cache
 	•	.coverage
 	•	trained_models/
+	•	packaged_models/
 	•	logs/
 	•	test_results/
 
 #### Run Training
 
  ```
-make runtrain
+make train
  ```
 
 This command executes the training script train.py and starts the model training process.
 
-#### Run Tests
+#### Run Inference Tests
 
  ```
-make runtests
+make eval
  ```
 
 This command runs the script test.py, allowing you to test the model prediction and validation.
@@ -222,6 +225,43 @@ make format
 
 This command will format the entire codebase using black. Use this before committing code to ensure consistency and readability.
 
+#### Package
+
+ ```
+make package-[model name]
+ ```
+
+This command will package your model for use in an allora worker, remember to replace [model name] with your actual model, ex: "arima"
+
+
+## Packaging Models for Allora Worker
+
+The purpose of the package_model_worker.py script is to export a trained model along with its configurations in a format that can be deployed into the allora-worker repository.
+
+This script packages the model files, dependencies, and configuration into a structure that allows seamless integration with the allora-worker setup.
+
+#### How to Use
+
+Run the following command to package your model for the Allora worker:
+
+``` make package-arima ```
+
+Replace arima with the name of the model you’d like to package (e.g., lstm, arima, etc.).
+
+This will:
+
+	•	Copy the model’s files and dependencies into the packaged_models/package folder.
+    •	Run test's for inference and training to validate funtionality in a worker
+	•	Generate a configuration file, config.py, that contains the active model information.
+
+#### Next Steps
+
+After running the packaging command:
+
+	1.	Navigate to the packaged_models folder in your allora-model-maker repo.
+	2.	Copy the package folder and the config.py file to the root folder of your allora-worker repository.
+
+By following these steps, your packaged model will be ready for deployment in the allora-worker environment.
 
 
 ## Contributing
@@ -258,8 +298,8 @@ Contributions are welcome! To ensure a smooth contribution process, please follo
 - Use meaningful commit messages that clearly describe your changes.
 - Make sure your branch is up-to-date with the latest changes from the main branch.
 - Avoid including unnecessary files in your pull request, such as compiled or cache files. The `make clean` command can help with that:
-  
-   ```make clean ``` 
+
+   ```make clean ```
 
 By following these practices, you help maintain the quality and consistency of the project.
 

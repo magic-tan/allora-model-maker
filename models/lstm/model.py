@@ -301,7 +301,7 @@ class LstmModel(Model):
                 "date": input_data["date"][
                     : len(predictions)
                 ],  # Ensure the date column matches the length of predictions
-                "predictions": predictions,
+                "prediction": predictions,
             }
         ).reset_index(drop=True)
 
