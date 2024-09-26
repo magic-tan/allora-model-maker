@@ -1,4 +1,4 @@
-.PHONY: lint format test clean train eval package package-all $(MODEL_DIRS)
+.PHONY: lint format test clean train eval pyreqs fullreqs package package-all $(MODEL_DIRS)
 
 lint:
 	find . -name "*.py" | xargs pylint --rcfile=.pylintrc
@@ -19,6 +19,11 @@ train:
 eval:
 	python test.py
 
+pyreqs:
+	pipdeptree --freeze --warn silence | grep -E '^[a-zA-Z0-9\-]+' > requirements.txt
+
+fullreqs:
+	pip freeze > requirements.txt
 
 MODEL_DIRS := $(shell find trained_models -type d -maxdepth 1 -mindepth 1 -exec basename {} \;)
 package-all: $(addprefix package-, $(MODEL_DIRS))

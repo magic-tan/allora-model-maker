@@ -1,6 +1,8 @@
 # Allora Model Maker
 
-## Overview
+<div style="text-align: center;">
+<img src="https://cdn.prod.website-files.com/667c44f051907593fdb7e7fe/667c789fa233d4f02c1d8cfa_allora-webclip.png" alt="Allora Logo" width="200"/>
+</div>
 
 Allora Model Maker is a comprehensive machine learning framework designed for time series forecasting, specifically optimized for financial market data like cryptocurrency prices, stock prices, and more. It supports multiple models, including traditional statistical models like ARIMA and machine learning models like LSTM, XGBoost, and more.
 
@@ -30,9 +32,13 @@ Allora Model Maker is a comprehensive machine learning framework designed for ti
 8. [Packaging Models for Allora Worker](#packaging-models-for-allora-worker)
    - [8.1 How to Use](#how-to-use)
    - [8.2 Next Steps](#next-steps)
-9. [Contributing](#contributing)
-10. [General Best Practices](#general-best-practices)
-11. [License](#license)
+9. [Data](#data)
+   - [9.1 Data Provider](#data-provider)
+   - [9.2 How We Use Tiingo](#how-we-use-tiingo)
+   - [9.3 Setting Up Tiingo](#setting-up-tiingo)
+10. [Contributing](#contributing)
+11. [General Best Practices](#general-best-practices)
+12. [License](#license)
 ## Features
 - Multiple model support (ARIMA, LSTM, XGBoost, Random Forest, etc.)
 - Configurable time intervals (`5M`, `H`, `D`, etc.) for time series data
@@ -157,14 +163,12 @@ allora-model-maker/
 │
 ├── data/                      # Data loading and preprocessing utilities
 │
-├── configs/                   # Global configuration files
-│
+├── configs.py                 # Global configuration files
+├── Makefile                   # Makefile for streamlined operations
+├── package_model_worker.py    # Script for packaging a model for allora worker
+├── requirements.txt           # Python dependencies
 ├── train.py                   # Script for training models
 ├── test.py                    # Script for testing models and metrics
-├── package_model_worker.py    # Script for packaging a model for allora worker
-├── README.md                  # This file
-├── requirements.txt           # Python dependencies
-├── Makefile                   # Makefile for streamlined operations
  ```
 
 ## Makefile
@@ -272,6 +276,46 @@ After running the packaging command:
 	2.	Copy the package folder and the config.py file to the root folder of your allora-worker repository.
 
 By following these steps, your packaged model will be ready for deployment in the allora-worker environment.
+
+
+## Data
+### Data Provider
+
+<img src="https://www.tiingo.com/dist/images/tiingo/logos/tiingo_full_light_color.svg" alt="Tiingo Logo" width="200"/>
+
+We are proud to incorporate **Tiingo** as the primary data provider for our framework. Tiingo is a powerful financial data platform that offers a wide range of market data, including:
+
+- **Stock Prices** (historical and real-time)
+- **Crypto Prices** (historical and real-time)
+- **Fundamental Data**
+- **News Feeds**
+- **Alternative Data Sources**
+
+By integrating Tiingo, our framework ensures that you have access to high-quality, reliable data for various financial instruments, empowering you to make informed decisions based on up-to-date market information.
+
+### How We Use Tiingo
+
+Our framework uses the Tiingo API to fetch and process data seamlessly within the system. This integration provides efficient and real-time data access to enable advanced analytics, backtesting, and more. Whether you're developing trading strategies, conducting financial analysis, or creating investment models, Tiingo powers the data behind our features.
+
+To use Tiingo data with our framework, you'll need to obtain a Tiingo API key. You can sign up for an API key by visiting [Tiingo's website](https://www.tiingo.com) and following their documentation for API access.
+
+### Setting Up Tiingo
+
+To configure Tiingo within the framework:
+
+1. **Get your API key** from Tiingo:
+   Visit [Tiingo's API](https://api.tiingo.com/) to sign up and retrieve your API key.
+
+2. **Set the API key** in your environment:
+   Add the following environment variable to your `.env` file or pass it directly in your configuration:
+   ```bash
+   TIINGO_API_KEY=your_api_key_here
+   ```
+
+3. **Start using Tiingo data** in your projects:
+   Our framework will automatically fetch data from Tiingo using your API key, ensuring that you have the most accurate and up-to-date market data for your application.
+
+For more detailed information on how to use Tiingo's services, please refer to their [official API documentation](https://api.tiingo.com/documentation).
 
 
 ## Contributing

@@ -1,45 +1,92 @@
 # conda create --name modelmaker python=3.9
 # conda activate modelmaker
 # pip install -r requirements.txt
+import sys
+from datetime import datetime, timedelta
 
 # pylint: disable=no-name-in-module
 from configs import models
 from data.csv_loader import CSVLoader
-from data.data_fetcher import DataFetcher
+from data.tiingo_data_fetcher import DataFetcher
 from data.utils.data_preprocessing import preprocess_data
 from models.model_factory import ModelFactory
 from utils.common import print_colored
 
 
 def select_data(fetcher, default_selection=None, file_path=None):
-    """Provide an interface to choose between CSV data or API data."""
+    """Provide an interface to choose between Tiingo stock, Tiingo crypto, or CSV data."""
+
+    default_end_date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+
     if default_selection is None:
         print("Select the data source:")
-        print("1. Bitcoin (BTC) from API")  # Example of a default selection
-        print("2. Ethereum (ETH) from API")  # Example of a default selection
-        print("3. USD Exchange Rates from API")  # Example of a default selection
-        print("4. Load data from CSV file")
+        print("1. Tiingo Stock Data")
+        print("2. Tiingo Crypto Data")
+        print("3. Load data from CSV file")
 
-        selection = input("Enter your choice (1/2/3/4): ").strip()
+        selection = input("Enter your choice (1/2/3): ").strip()
     else:
         selection = default_selection
 
     if selection == "1":
-        print("Fetching Bitcoin data from API...")
-        return fetcher.fetch_bitcoin_data()
+        print("You selected Tiingo Stock Data.")
+        symbol = input("Enter the stock symbol (default: AAPL): ").strip() or "AAPL"
+        frequency = (
+            input(
+                "Enter the frequency (daily/weekly/monthly/annually, default: daily): "
+            ).strip()
+            or "daily"
+        )
+        start_date = (
+            input("Enter the start date (YYYY-MM-DD, default: 2021-01-01): ").strip()
+            or "2021-01-01"
+        )
+        end_date = (
+            input(
+                f"Enter the end date (YYYY-MM-DD, default: {default_end_date}): "
+            ).strip()
+            or default_end_date
+        )
+
+        print(
+            f"Fetching Tiingo Stock Data for {symbol} from {start_date} to {end_date} with {frequency} frequency..."
+        )
+        return fetcher.fetch_tiingo_stock_data(symbol, start_date, end_date, frequency)
+
     if selection == "2":
-        print("Fetching Ethereum data from API...")
-        return fetcher.fetch_eth_data()
+        print("You selected Tiingo Crypto Data.")
+        symbol = (
+            input("Enter the crypto symbol (default: btcusd): ").strip() or "btcusd"
+        )
+        frequency = (
+            input("Enter the frequency (1min/5min/4hour/1day, default: 1day): ").strip()
+            or "1day"
+        )
+        start_date = (
+            input("Enter the start date (YYYY-MM-DD, default: 2021-01-01): ").strip()
+            or "2021-01-01"
+        )
+        end_date = (
+            input(
+                f"Enter the end date (YYYY-MM-DD, default: {default_end_date}): "
+            ).strip()
+            or default_end_date
+        )
+
+        print(
+            f"Fetching Tiingo Crypto Data for {symbol} from {start_date} to {end_date} with {frequency} frequency..."
+        )
+        return fetcher.fetch_tiingo_crypto_data(symbol, start_date, end_date, frequency)
+
     if selection == "3":
-        print("Fetching USD Exchange Rate data from API...")
-        return fetcher.fetch_usd_data()
-    if selection == "4":
+        print("You selected to load data from a CSV file.")
         if file_path is None:
             file_path = input("Enter the CSV file path: ").strip()
         return CSVLoader.load_csv(file_path)
 
-    print_colored("Invalid choice, defaulting to Bitcoin from API.", "error")
-    return fetcher.fetch_bitcoin_data()
+    # Exit the program if the user enters an invalid choice
+    print_colored("Invalid choice", "error")
+    sys.exit(1)
 
 
 def model_selection_input():

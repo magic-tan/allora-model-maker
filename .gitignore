@@ -1,5 +1,6 @@
 trained_models/
 packaged_models/
+.env.local
 __pycache__
 *.pyc
 .DS_Store
@@ -12,3 +13,5 @@ __pycache__
 */.mypy/
 */.coverage
 */.DS_Store
+data/sets/*
+requirements.verbose.txt
