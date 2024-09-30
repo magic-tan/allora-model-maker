@@ -54,13 +54,24 @@ Allora Model Maker is a comprehensive machine learning framework designed for ti
    cd allora-model-maker
     ```
 
+   #### Dont have conda?
+      On Mac simply use brew
+      ```bash
+      brew install miniconda
+      ```
+      On Windows go to the official [Miniconda download page](https://docs.conda.io/en/latest/miniconda.html)
+
 2. Create a conda environment:
     ```bash
-   conda create --name modelmaker python=3.9
-   conda activate modelmaker
+   conda create --name modelmaker python=3.9 && conda activate modelmaker
     ```
 
-3. Install dependencies:
+3. Preinstall setuptools, cython and numpy
+   ```bash
+   pip install setuptools==72.1.0 Cython==3.0.11 numpy==1.24.3
+   ```
+
+4. Install dependencies:
     ```bash
    pip install -r requirements.txt
     ```
@@ -73,7 +84,7 @@ You can train models by running the `train.py` script. It supports multiple mode
 
 Example for training:
  ```bash
-python train.py
+make train
  ```
 
 ### Model Testing
@@ -82,7 +93,7 @@ You can test models by running the `test.py` script. It supports multiple model 
 
 Example for testing:
  ```bash
-python test.py
+make eval
  ```
 
 During runtime, you will be prompted to select if you want to test models, metrics or both. The testing data is currently synthetic.
@@ -264,16 +275,16 @@ Replace arima with the name of the model you’d like to package (e.g., lstm, ar
 
 This will:
 
-	•	Copy the model’s files and dependencies into the packaged_models/package folder.
-    •	Run test's for inference and training to validate funtionality in a worker
-	•	Generate a configuration file, config.py, that contains the active model information.
+ - Copy the model’s files and dependencies into the packaged_models/package folder.
+ - Run test's for inference and training to validate funtionality in a worker
+ - Generate a configuration file, config.py, that contains the active model information.
 
 #### Next Steps
 
 After running the packaging command:
 
-	1.	Navigate to the packaged_models folder in your allora-model-maker repo.
-	2.	Copy the package folder and the config.py file to the root folder of your allora-worker repository.
+1.	Navigate to the packaged_models folder in your allora-model-maker repo.
+2.	Copy the **package** folder into the src folder of your allora-worker repository.
 
 By following these steps, your packaged model will be ready for deployment in the allora-worker environment.
 

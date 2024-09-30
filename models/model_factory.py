@@ -39,3 +39,6 @@ class ModelFactory:
             raise ValueError(
                 f"Model class '{model_class_name}' not found in {model_name}.model. Error: {str(e)}"
             ) from e
+        # pylint: disable=broad-except
+        except Exception as e:
+            raise ValueError(f"Model {model_name} not trained. Error: {str(e)}") from e

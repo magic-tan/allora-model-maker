@@ -4,6 +4,7 @@ import pandas as pd
 from configs import metrics, models
 from metrics.metric_factory import MetricFactory
 from models.model_factory import ModelFactory
+from utils.common import print_colored
 
 # Simulate some input data for testing/prediction
 input_data = pd.DataFrame(
@@ -34,30 +35,40 @@ def test_models():
         # pylint: disable=broad-except
         except Exception as e:
             print(f"Error: Model {model_name} not found. Exception: {e}")
+            continue
 
         model.load()
 
-        print(f"Making predictions with the {model_name} model...")
+        try:
+            # Call model.inference() to get predictions
+            predictions = model.inference(input_data)
+            print(f"Making predictions with the {model_name} model...")
 
-        # Call model.inference() to get predictions
-        predictions = model.inference(input_data)
+            if model_name in ("prophet", "arima", "lstm"):
+                print(f"{model_name.replace('_',' ').capitalize()} Model Predictions:")
+                print(predictions)
+            else:
+                # Standardize predictions: convert DataFrame to NumPy array if necessary, and flatten
+                if isinstance(predictions, pd.DataFrame):
+                    predictions = (
+                        predictions.values
+                    )  # Convert DataFrame to NumPy array if it's a DataFrame
 
-        if model_name in ("prophet", "arima", "lstm"):
-            print(f"{model_name.replace('_',' ').capitalize()} Model Predictions:")
-            print(predictions)
-        else:
-            # Standardize predictions: convert DataFrame to NumPy array if necessary, and flatten
-            if isinstance(predictions, pd.DataFrame):
-                predictions = (
-                    predictions.values
-                )  # Convert DataFrame to NumPy array if it's a DataFrame
+                if predictions.ndim == 2:
+                    predictions = predictions.ravel()  # Flatten if it's a 2D array
 
-            if predictions.ndim == 2:
-                predictions = predictions.ravel()  # Flatten if it's a 2D array
+                # Output predictions
+                print(f"{model_name.capitalize()} Model Predictions:")
+                print(
+                    pd.DataFrame({"predictions": predictions}, index=input_data.index)
+                )
 
-            # Output predictions
-            print(f"{model_name.capitalize()} Model Predictions:")
-            print(pd.DataFrame({"predictions": predictions}, index=input_data.index))
+        # pylint: disable=broad-except
+        except Exception as e:
+            print_colored(
+                f"Error: Model {model_name} not found. Exception: {e}", "error"
+            )
+            continue
 
 
 def test_metrics():

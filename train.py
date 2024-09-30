@@ -1,5 +1,6 @@
 # conda create --name modelmaker python=3.9
 # conda activate modelmaker
+# pip install setuptools==72.1.0 Cython==3.0.11 numpy==1.24.3
 # pip install -r requirements.txt
 import sys
 from datetime import datetime, timedelta
