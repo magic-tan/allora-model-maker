@@ -32,6 +32,9 @@ class RegressionModel(Model):
         self.save()
 
     def inference(self, input_data: pd.DataFrame) -> pd.DataFrame:
+        # Drop rows with missing values in the input data
+        input_data = input_data.dropna()
+
         # Ensure input_data contains the necessary features
         x_test = input_data[["open", "high", "low", "volume"]]
 
@@ -40,7 +43,7 @@ class RegressionModel(Model):
 
         # Predict using the trained model and convert to DataFrame
         predictions = pd.DataFrame(
-            self.model.predict(x_test_scaled), columns=["forecast"]
+            self.model.predict(x_test_scaled), columns=["prediction"]
         )
 
         return predictions

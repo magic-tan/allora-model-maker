@@ -59,9 +59,7 @@ def test_models():
 
                 # Output predictions
                 print(f"{model_name.capitalize()} Model Predictions:")
-                print(
-                    pd.DataFrame({"predictions": predictions}, index=input_data.index)
-                )
+                print(pd.DataFrame({"prediction": predictions}, index=input_data.index))
 
         # pylint: disable=broad-except
         except Exception as e:

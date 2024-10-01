@@ -85,7 +85,7 @@ class RandomForestTimeSeriesModel(Model):
 
         # Ensure the predictions have the same index as input_data_with_lags, not input_data
         predictions_df = pd.DataFrame(
-            {"predictions": predictions}, index=input_data_with_lags.index
+            {"prediction": predictions}, index=input_data_with_lags.index
         )
 
         # Merge the predictions back with the original input_data index, filling NaNs for the initial rows

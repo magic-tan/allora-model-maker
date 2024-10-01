@@ -5,7 +5,6 @@ from sklearn.preprocessing import MinMaxScaler
 
 from models.base_model import Model
 from models.xgboost.configs import XgboostConfig
-
 from utils.model_commons import split_and_scale_data
 
 
@@ -60,7 +59,7 @@ class XgboostModel(Model):
         # Predict using the trained XGBoost model
         predictions = self.model.predict(dtest)
 
-        return pd.DataFrame({"predictions": predictions})
+        return pd.DataFrame({"prediction": predictions})
 
     def forecast(self, steps: int) -> pd.DataFrame:
         # Dummy forecast logic for now

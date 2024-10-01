@@ -5,7 +5,6 @@ from sklearn.preprocessing import MinMaxScaler
 
 from models.base_model import Model
 from models.random_forest.configs import RandomForestConfig
-
 from utils.model_commons import split_and_scale_data
 
 
@@ -62,7 +61,7 @@ class RandomForestModel(Model):
         # Make predictions using the trained model
         predictions = self.model.predict(features_scaled)
 
-        return pd.DataFrame({"predictions": predictions})
+        return pd.DataFrame({"prediction": predictions})
 
     def forecast(self, steps: int) -> pd.DataFrame:
         # A simple dummy forecast implementation for now
