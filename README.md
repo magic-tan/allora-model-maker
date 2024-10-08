@@ -81,6 +81,7 @@ Allora Model Maker is a comprehensive machine learning framework designed for ti
 ### Model Training
 
 You can train models by running the `train.py` script. It supports multiple model types and interval resampling.
+We provided an eth.csv dataset that you can use for training, select option 3 and use data/sets/eth.csv otherwise setup [Tiingo](#data)!
 
 Example for training:
  ```bash
