@@ -286,6 +286,7 @@ After running the packaging command:
 
 1.	Navigate to the packaged_models folder in your allora-model-maker repo.
 2.	Copy the **package** folder into the src folder of your allora-worker repository.
+3. If you did this right in your allora-worker repo you'll now have **allora-worker/src/package**
 
 By following these steps, your packaged model will be ready for deployment in the allora-worker environment.
 
