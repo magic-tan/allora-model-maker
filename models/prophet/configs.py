@@ -10,12 +10,15 @@ class ProphetConfig:
 
     def __init__(self):
         # Prophet model configuration
-        self.growth = "linear"  # Options: 'linear', 'logistic'
-        self.changepoint_prior_scale = 0.05  # Regularization strength for changepoints
-        self.seasonality_mode = "additive"  # Options: 'additive', 'multiplicative'
-        self.yearly_seasonality = True  # Whether to include yearly seasonality
+        self.growth = "logistic"  # Options: 'linear', 'logistic'
+        self.cap = None  # Optional, for logistic growth. Can be dynamically calculated if None.
+        self.changepoint_prior_scale = 0.25  # Regularization strength for changepoints
+        self.seasonality_mode = (
+            "multiplicative"  # Options: 'additive', 'multiplicative'
+        )
+        self.yearly_seasonality = False  # Whether to include yearly seasonality
         self.weekly_seasonality = True  # Whether to include weekly seasonality
-        self.daily_seasonality = False  # Whether to include daily seasonality
+        self.daily_seasonality = True  # Whether to include daily seasonality
 
         # Forecast parameters
         self.periods = 365  # Default number of periods for future forecasts (trading days for stocks usually 252)

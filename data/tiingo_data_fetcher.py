@@ -6,9 +6,11 @@ from dotenv import load_dotenv
 
 # Load the .env.local file if it exists, otherwise load .env
 if os.path.exists(".env.local"):
-    load_dotenv(dotenv_path=".env.local")
+    print("Loading .env.local file...")
+    load_dotenv(dotenv_path=".env.local", override=True)
 else:
-    load_dotenv()  # Defaults to loading .env
+    print("Loading .env file...")
+    load_dotenv(dotenv_path=".env")  # Defaults to loading .env
 
 # Retrieve the API keys from environment variables
 TIINGO_API_KEY = os.getenv("TIINGO_API_KEY")

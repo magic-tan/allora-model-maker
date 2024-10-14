@@ -22,12 +22,30 @@ class ProphetModel(Model):
 
     def train(self, data: pd.DataFrame):
         df = data[["date", "close"]].copy()
+        df["date"] = pd.to_datetime(df["date"], errors="coerce")
+
+        # Drop rows with NaN values in 'date' or 'close'
+        df = df.dropna(subset=["date", "close"])
 
         if self.config.remove_timezone:
-            df["date"] = df["date"].dt.tz_localize(None)  # Remove timezone if present
+            df["date"] = df["date"].dt.tz_localize(None)
 
         df = df.rename(columns={"date": "ds", "close": "y"})
-        self.model.fit(df)
+
+        # Handle logistic growth: Set 'cap' and 'floor' values
+        if self.config.growth == "logistic":
+            max_y = df["y"].max()
+            df["cap"] = max_y * 1.1  # Set cap to 10% above max value
+            df["floor"] = 0  # Set a floor to prevent negative growth
+
+        if self.debug:
+            # Print data to check for NaNs or extreme values
+            print(df.isna().sum())
+            print(df.describe())
+
+        # Fit model
+        self.model.fit(df, iter=20000)
+
         self.save()
 
     def inference(self, input_data: pd.DataFrame) -> pd.DataFrame:
@@ -47,12 +65,24 @@ class ProphetModel(Model):
         if self.config.remove_timezone:
             future["ds"] = pd.to_datetime(future["ds"]).dt.tz_localize(None)
 
+        # Handle logistic growth: Ensure 'cap' and 'floor' columns are present
+        if self.config.growth == "logistic":
+            if "cap" not in input_data.columns:
+                # Dynamically set 'cap' if missing (assuming similar logic as training)
+                future["cap"] = (
+                    input_data["close"].max() * 1.1
+                )  # Example logic for setting 'cap'
+
+            if "floor" not in input_data.columns:
+                # Set the 'floor' if it's missing (e.g., default to 0)
+                future["floor"] = 0
+
         if self.debug:
             print("Future DataFrame for ProphetModel (after renaming):")
             print(future)
 
         # Perform the forecast using Prophet
-        forecast = self.model.predict(future)
+        forecast = self.model.predict(future, False)
         if self.debug:
             print("Forecast Output:")
             print(forecast[["ds", "yhat"]])

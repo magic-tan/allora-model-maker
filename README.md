@@ -63,15 +63,17 @@ Allora Model Maker is a comprehensive machine learning framework designed for ti
 
 2. Create a conda environment:
     ```bash
-   conda create --name modelmaker python=3.9 && conda activate modelmaker
+    conda env create -f environment.yml
     ```
-
-3. Preinstall setuptools, cython and numpy
+    If you want to manually do it:
+    ```bash
+    conda create --name modelmaker python=3.9 && conda activate modelmaker
+    ```
+   Preinstall setuptools, cython and numpy
    ```bash
    pip install setuptools==72.1.0 Cython==3.0.11 numpy==1.24.3
    ```
-
-4. Install dependencies:
+   Install dependencies:
     ```bash
    pip install -r requirements.txt
     ```
