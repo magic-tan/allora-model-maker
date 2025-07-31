@@ -3,7 +3,7 @@ import pandas as pd # pandas 是用来处理数据的库
 import numpy as np # numpy 是用来做数字计算的库
 import datetime # datetime 是用来处理日期的库
 import pickle # pickle 通常用来加载用Python保存的模型文件
-import os # os 模块用来处理文件和文件夹路径
+import os # os 负责处理文件和文件夹路径
 import joblib # joblib 通常也用来加载用Python保存的模型文件
 
 # --- 1. 加载你训练好的比特币预测模型 (arima 模型) ---
@@ -143,5 +143,5 @@ if not predicted_data.empty:
     st.header("历史价格与预测价格对比图")
     st.line_chart(combined_data)
 
-st.markdown("---") # 在网页上显示一条分割线
+st.markdown("---")
 st.info("学习机器学习和部署应用是很棒的经历！继续加油！")
